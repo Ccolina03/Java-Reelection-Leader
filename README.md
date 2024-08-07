@@ -2,16 +2,31 @@
 
 The following is my first ditributive system algorithm: Leader Election using Apache Zookeeper and Java. 
 
-First Draft of Design looks like this:
-  -> 1. Create Zookeeper object --> 2 ADDITIONAL threads are created (event and IO thread)
-  -> 2. Using zkCli to simulate having multiple nodes
-	-> 3. Every nodes connected to Zookeper volunteers to become a leader in main,
-			-> This is done by submitting its candidacy by adding a znode that represents itself under the election znode parents
-			-> Tree format in Zookeeper: 
-				-> / (/ zNode parent global)/ -> One children (/election) / -> lots of chidren / (/election/c_1), etc /
-			-> Zookeeper mantains gloabl order of addition (names according to addition) - Using this for my advantage :)
-	-> 4. After all znodes copies added to /election, it would query the current children of the election parent ( which is in order of addition)
-	-> 5. If first zNode in election is the smallest number then, this is the leader. Otherwise, we know it is not the the leader and now is waiting from instructions from elected leader
+## First Draft of Design
+
+1. **Create Zookeeper Object**
+   - Two additional threads are created: event thread and IO thread.
+
+2. **Using zkCli to Simulate Multiple Nodes**
+
+3. **Node Leadership Election**
+   - Every node connected to Zookeeper volunteers to become a leader.
+   - This is done by submitting its candidacy by adding a znode that represents itself under the election znode parent.
+
+4. **Zookeeper Tree Format**
+   - Tree structure in Zookeeper:
+     ```
+     /              (znode parent global)
+     └── /election  (children)
+         └── /election/c_1, /election/c_2, etc.
+     ```
+   - Zookeeper maintains a global order of addition (names according to addition), which is used to determine leadership.
+
+5. **Leader Election Process**
+   - After all znodes are added to `/election`, query the current children of the election parent (which are in order of addition).
+   - The first znode in the election is the leader (smallest number).
+   - If a node is not the leader, it waits for instructions from the elected leader.
+
 
  Next steps to take: Finalize algorithm and incorporate Service Registry and Cluster Auto Healer with Zookeeper.
 
