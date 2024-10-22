@@ -28,10 +28,13 @@ The following is my first ditributive system algorithm: Leader Election using Ap
    - If a node is not the leader, it waits for instructions from the elected leader.
 
 5. **Leader Reelection Process**
-   - To avoid making all nodes watch the leader and avoid lots of unnecessary events and increased load to be handled (i.e. nodeDeleted type should ideally only be prompted once) we can specify a node to watch only one at all times.
-   - In this case, the strategy would look like a linked list where n represents node and what what each node is watching for is the previous node:
-        n1(leader) <- n2 <- n3 <- n4 <- n5
-   - watchers are trigger once per event so we have to run the reelection function if node deleted to make sure they are synchronized
+      - To reduce the load and avoid unnecessary events (such as nodeDeleted events being triggered multiple times), I implemented a strategy where each node watches only one other node,          rather than all          nodes watching the leader. This minimizes the number of events the system has to handle.
+         In this strategy, the nodes are arranged in a similar structure to linked list, where each node watches the node directly preceding it in the sequence. For example:
+         n1(leader) <- n2 <- n3 <- n4 <- n5
+         n1 is the leader, and n2 is watching n1. n3 is watching n2, and so on. This ensures that when a node fails or is deleted, only the immediate follower node is notified.
+      - Since watchers are triggered only once per event, when a node is deleted, the system must:
+            Run the reelection process, where the next available node in the sequence becomes the leader.
+            Attach a new watcher to ensure the chain is re-established correctly, ensuring continuous synchronization.
 
 
 
