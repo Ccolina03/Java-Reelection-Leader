@@ -27,6 +27,13 @@ The following is my first ditributive system algorithm: Leader Election using Ap
    - The first znode in the election is the leader (smallest number).
    - If a node is not the leader, it waits for instructions from the elected leader.
 
+5. **Leader Reelection Process**
+   - To avoid making all nodes watch the leader and avoid lots of unnecessary events and increased load to be handled (i.e. nodeDeleted type should ideally only be prompted once) we can specify a node to watch only one at all times.
+   - In this case, the strategy would look like a linked list where n represents node and what what each node is watching for is the previous node:
+        n1(leader) <- n2 <- n3 <- n4 <- n5
+   - watchers are trigger once per event so we have to run the reelection function if node deleted to make sure they are synchronized
+
+
 
  Next steps to take: Finalize algorithm and incorporate Service Registry and Cluster Auto Healer with Zookeeper.
 
