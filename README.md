@@ -80,6 +80,4 @@ The following is my first ditributive system algorithm: Leader Election using Ap
 
  Afterwards, I will be implementing my own Distributed Document Search
    - Apply Load Balancing theory to use with HAProxy.
-   - Building Distributive Banking System with Apache Kafka
-   - Dynamix Sharding, Database Replication and Quorum Consensus in MongoDB
-   - MultiRegion Deployed and global load balancing
+   - Building Distributive Banking System to retrieve account balances and find fraudalent operatonis with Apache Kafka, Apache Flink/Streams, Apache Ignite, MongoDB/PostgreSQL
